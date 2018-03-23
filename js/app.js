@@ -11,7 +11,15 @@
  */
 
 
-const cards = document.getElementsByClassName(".card");
+
+document.addEventListener('DOMContentLoaded', function(event){
+
+let cards = document.getElementsByClassName("card");
+
+shuffle(cards);
+setCards();
+
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(cards) {
@@ -26,12 +34,19 @@ function shuffle(cards) {
     }
 
     return cards;
-}
+};
+
+function setCards() {
+
+    for (let i = 0; i < cards.length; i++) {
+        document.querySelector(".deck").appendChild(cards[i]);
+    }
+    
+}; 
 
 
 
-
-
+});
 
 
 
