@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function(event){
 
 let cards = Array.from(document.getElementsByClassName('card'));
 let deck = document.querySelector('.deck'); 
+let openCards = []; 
 
 // Calling functions 
 
@@ -25,6 +26,7 @@ let shuffledCards = shuffle(cards);
 setCards();
 
 
+// Setting up the cards for the game: 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -48,6 +50,27 @@ function setCards() {
     }
     
 }; 
+
+// Event listener for card:
+
+for (let j = 0; j < shuffledCards.length; j++) {
+       
+    let showCard = function() {
+        return shuffledCards[j].classList.add('open', 'show');
+    };
+
+    let addToOpenCards = function() {
+        return openCards.push(shuffledCards[j]); //check if this works??
+    };
+
+    shuffledCards[j].addEventListener('click', showCard, addToOpenCards);
+
+    if (openCards.length >= 2) {
+        shuffledCards[j].removeEventListener('click', showCard, addToOpenCards);
+     } 
+
+}
+            
 
 
 
