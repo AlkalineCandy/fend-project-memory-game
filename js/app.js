@@ -15,6 +15,7 @@
 document.addEventListener('DOMContentLoaded', function(event){
 
 let cards = document.getElementsByClassName("card");
+let deck = document.querySelector(".deck"); 
 
 shuffle(cards);
 setCards();
@@ -38,8 +39,10 @@ function shuffle(cards) {
 
 function setCards() {
 
+    deck.innerHTML= ''; 
+     
     for (let i = 0; i < cards.length; i++) {
-        document.querySelector(".deck").appendChild(cards[i]);
+        deck.appendChild(cards[i]);
     }
     
 }; 
