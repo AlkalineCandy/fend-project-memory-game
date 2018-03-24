@@ -14,35 +14,36 @@
 
 document.addEventListener('DOMContentLoaded', function(event){
 
-let cards = document.getElementsByClassName("card");
-let deck = document.querySelector(".deck"); 
+let cards = Array.from(document.getElementsByClassName('card'));
+let deck = document.querySelector('.deck'); 
 
-shuffle(cards);
+
+let shuffledCards = shuffle(cards);
 setCards();
 
 
-
 // Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(cards) {
-    var currentIndex = cards.length, temporaryValue, randomIndex;
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        temporaryValue = cards[currentIndex];
-        cards[currentIndex] = cards[randomIndex];
-        cards[randomIndex] = temporaryValue;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
     }
 
-    return cards;
+    return array;
 };
+
+
 
 function setCards() {
 
-    deck.innerHTML= ''; 
-     
-    for (let i = 0; i < cards.length; i++) {
-        deck.appendChild(cards[i]);
+  
+    for (let i = 0; i < shuffledCards.length; i++) {
+        deck.appendChild(shuffledCards[i]);
     }
     
 }; 
