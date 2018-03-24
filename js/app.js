@@ -14,9 +14,12 @@
 
 document.addEventListener('DOMContentLoaded', function(event){
 
+// Variables 
+
 let cards = Array.from(document.getElementsByClassName('card'));
 let deck = document.querySelector('.deck'); 
 
+// Calling functions 
 
 let shuffledCards = shuffle(cards);
 setCards();
@@ -38,10 +41,8 @@ function shuffle(array) {
 };
 
 
-
 function setCards() {
 
-  
     for (let i = 0; i < shuffledCards.length; i++) {
         deck.appendChild(shuffledCards[i]);
     }
@@ -50,7 +51,7 @@ function setCards() {
 
 
 
-});
+}); // closes the DOMContentLoaded event listener 
 
 
 
