@@ -12,65 +12,77 @@
 
 
 
-document.addEventListener('DOMContentLoaded', function(event){
+document.addEventListener('DOMContentLoaded', function (event) {
 
-// Variables 
+    // Variables 
 
-let cards = Array.from(document.getElementsByClassName('card'));
-let deck = document.querySelector('.deck'); 
-let openCards = []; 
+    let cards = Array.from(document.getElementsByClassName('card'));
+    let deck = document.querySelector('.deck');
+    let openCards = [];
 
-// Calling functions 
+    // Calling functions 
 
-let shuffledCards = shuffle(cards);
-setCards();
-
-
-// Setting up the cards for the game: 
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-};
+    let shuffledCards = shuffle(cards);
+    setCards();
 
 
-function setCards() {
+    // Setting up the cards for the game: 
+    // Shuffle function from http://stackoverflow.com/a/2450976
+    function shuffle(array) {
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
 
-    for (let i = 0; i < shuffledCards.length; i++) {
-        deck.appendChild(shuffledCards[i]);
-    }
-    
-}; 
+        while (currentIndex !== 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+        }
 
-// Event listener for card:
-
-for (let j = 0; j < shuffledCards.length; j++) {
-       
-    let showCard = function() {
-        return shuffledCards[j].classList.add('open', 'show');
+        return array;
     };
 
-    let addToOpenCards = function() {
-        return openCards.push(shuffledCards[j]); //check if this works??
+
+    function setCards() {
+
+        for (let i = 0; i < shuffledCards.length; i++) {
+            deck.appendChild(shuffledCards[i]);
+        }
+
     };
 
-    shuffledCards[j].addEventListener('click', showCard, addToOpenCards);
+    // Event listener for card:
 
-    if (openCards.length >= 2) {
-        shuffledCards[j].removeEventListener('click', showCard, addToOpenCards);
-     } 
+    let showCard = function (event) {
+        return event.target.classList.add('open', 'show');
+    };
 
-}
-            
+    let addToOpenCards = function (event) {
+        return openCards.push(target.event);
+    };
+
+    let dblFunc = function (event) {
+        showCard(event);
+        addToOpenCards(event);
+    };
+
+
+    for (let j = 0; j < shuffledCards.length; j++) {
+
+        shuffledCards[j].addEventListener('click', dblFunc);
+
+
+        if (openCards.length > 2) {
+            alert("boo");
+
+            //shuffledCards[j].removeEventListener('click', doublefunc); 
+
+        }
+
+    }
+
+
 
 
 
