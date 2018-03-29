@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', function (event) {
     let deck = document.querySelector('.deck');
     let openCards = [];
 
-    // Calling functions 
+
+    // Setting up the cards for the game
 
     let shuffledCards = shuffle(cards);
     setCards();
 
 
-    // Setting up the cards for the game: 
     // Shuffle function from http://stackoverflow.com/a/2450976
     function shuffle(array) {
         var currentIndex = array.length,
@@ -52,38 +52,71 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     };
 
-    // Event listener for card:
+    // Functions for the event listeners
+
 
     let showCard = function (event) {
         return event.target.classList.add('open', 'show');
     };
 
     let addToOpenCards = function (event) {
-        return openCards.push(target.event);
+        return openCards.push(event.target);
     };
 
-    let dblFunc = function (event) {
-        showCard(event);
-        addToOpenCards(event);
+    let lockMatch = function (event) {
+        openCards[0].classList.add('match');
+        openCards[1].classList.add('match');
     };
 
+    let flipBack = function (event) {
 
-    for (let j = 0; j < shuffledCards.length; j++) {
-
-        shuffledCards[j].addEventListener('click', dblFunc);
+        window.setTimeout(function () { // sets the time after which incorrect cards will be flipped back
 
 
-        if (openCards.length > 2) {
-            alert("boo");
+            event.target.classList.remove('open', 'show');
 
-            //shuffledCards[j].removeEventListener('click', doublefunc); 
 
+        }, 800);
+    }
+
+
+    function removeFromArray(arr, item) { // so that we can remove 2 items from openCards
+        for (var i = 0; i < item; i++) {
+            arr.pop();
         }
 
     }
 
 
 
+
+    let playFunc = function (event) {
+        showCard(event);
+        addToOpenCards(event);
+        console.log(openCards);
+
+
+        if (openCards.length === 2 && openCards[0] !== openCards[1]) {
+            removeFromArray(openCards, 2);
+            flipBack(event);
+            console.log(openCards);
+
+
+        } else if (openCards[0] === openCards[1]) {
+            lockMatch(event);
+            console.log(openCards);
+
+
+        }
+
+    };
+
+
+    for (let j = 0; j < shuffledCards.length; j++) {
+
+        shuffledCards[j].addEventListener('click', playFunc);
+
+    }
 
 
 }); // closes the DOMContentLoaded event listener 
