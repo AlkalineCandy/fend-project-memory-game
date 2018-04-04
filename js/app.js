@@ -63,21 +63,26 @@ document.addEventListener('DOMContentLoaded', function (event) {
         return openCards.push(event.target);
     };
 
+
     let lockMatch = function (event) {
         openCards[0].classList.add('match');
         openCards[1].classList.add('match');
+        openCards[0].removeEventListener('click', playFunc);
+        openCards[1].removeEventListener('click', playFunc);
+
     };
 
     let flipBack = function (event) {
 
         window.setTimeout(function () { // sets the time after which incorrect cards will be flipped back
 
-
-            event.target.classList.remove('open', 'show');
-
+            cards.forEach(card => {
+                card.classList.remove('open', 'show');
+            })
 
         }, 800);
     }
+
 
 
     function removeFromArray(arr, item) { // so that we can remove 2 items from openCards
@@ -93,21 +98,25 @@ document.addEventListener('DOMContentLoaded', function (event) {
     let playFunc = function (event) {
         showCard(event);
         addToOpenCards(event);
-        console.log(openCards);
+        debugger
 
 
-        if (openCards.length === 2 && openCards[0] !== openCards[1]) {
+        if (openCards.length === 2 && openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
+            console.log(openCards[0].firstElementChild.classList);
+            console.log(openCards[1].firstElementChild.classList);
+            lockMatch(event);
+            removeFromArray(openCards, 2);
+
+        } else if (openCards.length === 2 && !openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
+            console.log(openCards[0].firstElementChild.classList);
+            console.log(openCards[1].firstElementChild.classList);
             removeFromArray(openCards, 2);
             flipBack(event);
-            console.log(openCards);
+
+        } 
 
 
-        } else if (openCards[0] === openCards[1]) {
-            lockMatch(event);
-            console.log(openCards);
 
-
-        }
 
     };
 
