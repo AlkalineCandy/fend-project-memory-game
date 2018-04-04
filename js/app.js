@@ -90,7 +90,18 @@ document.addEventListener('DOMContentLoaded', function (event) {
             arr.pop();
         }
 
-    }
+    };
+
+    let count = 0;
+
+    function counterFunc(event) {
+        
+debugger 
+    
+            count += 1;
+            return document.querySelector('.moves').innerHTML = count;
+    
+    };
 
 
 
@@ -98,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     let playFunc = function (event) {
         showCard(event);
         addToOpenCards(event);
-        debugger
+        counterFunc(event);
 
 
         if (openCards.length === 2 && openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
@@ -113,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
             removeFromArray(openCards, 2);
             flipBack(event);
 
-        } 
+        }
 
 
 
