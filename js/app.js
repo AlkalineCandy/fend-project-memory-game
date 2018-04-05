@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
     let openCards = [];
     let counter = 0;
 
+    let min = document.getElementById('min');
+let sec = document.getElementById('sec');
+let secCount = 0;
+let minCount = 0; 
+
 
     // Setting up the cards for the game
 
@@ -60,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
         showCard(event);
         addToOpenCards(event);
         counterFunc(event);
+      
 
 
         if (openCards.length === 2 && openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
@@ -139,6 +145,36 @@ document.addEventListener('DOMContentLoaded', function (event) {
         shuffledCards[j].addEventListener('click', playFunc);
 
     }
+
+
+    // Timer 
+
+    
+ function addZero (num) { // adds zeroes to time display
+   if (num < 10) {
+     return "0" + num; 
+   } else {
+     return num; 
+   }
+ };
+
+
+let timer = function(){ window.setInterval(function() {
+  secCount += 1; 
+  sec.innerHTML = addZero(secCount); 
+  if (secCount === 10) {
+    minCount += 1; 
+    min.innerHTML = addZero(minCount); 
+    secCount = 0; 
+    sec.innerHTML = addZero(secCount);
+   }
+    
+}, 1000)
+window.removeEventListener('click', timer);
+};
+
+window.addEventListener('click', timer);
+
 
 }); // closes the DOMContentLoaded event listener 
 
