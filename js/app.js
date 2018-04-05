@@ -78,8 +78,17 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 
     let showCard = function (event) {
-        return event.target.classList.add('open', 'show');
+        debugger
+       event.target.classList.add('open', 'show');   
+      event.target.removeEventListener('click', playFunc); // prevents the card from being clicked twice
+      
+      if (event.target > 2) {
+        return false; 
+      }
+      
+      
     };
+
 
     let addToOpenCards = function (event) {
         return openCards.push(event.target);
@@ -100,9 +109,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
             cards.forEach(card => {
                 card.classList.remove('open', 'show');
-            })
+               card.addEventListener('click', playFunc); //readds the event listener that has been removed 
+                   
+          
 
-        }, 800);
+        })}, 1200);
+         
     }
 
 
