@@ -14,11 +14,12 @@
 
 document.addEventListener('DOMContentLoaded', function (event) {
 
-    // Variables 
+    // Initial variables 
 
     let cards = Array.from(document.getElementsByClassName('card'));
     let deck = document.querySelector('.deck');
     let openCards = [];
+    let counter = 0;
 
 
     // Setting up the cards for the game
@@ -52,7 +53,28 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     };
 
-    // Functions for the event listeners
+
+    // Click function for playing; also compares the cards to see if they match 
+
+    let playFunc = function (event) {
+        showCard(event);
+        addToOpenCards(event);
+        counterFunc(event);
+
+
+        if (openCards.length === 2 && openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
+            lockMatch(event);
+            removeFromArray(openCards, 2);
+
+        } else if (openCards.length === 2 && !openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
+            flipBack(event);
+            removeFromArray(openCards, 2);
+
+        }
+
+    };
+
+    // Functions called upon a click 
 
 
     let showCard = function (event) {
@@ -84,60 +106,27 @@ document.addEventListener('DOMContentLoaded', function (event) {
     }
 
 
-
-    function removeFromArray(arr, item) { // so that we can remove 2 items from openCards
+    let removeFromArray = function (arr, item) { // function that removes 2 items from the openCards array at once 
         for (var i = 0; i < item; i++) {
             arr.pop();
         }
 
     };
 
-    let count = 0;
+    let counterFunc = function (event) {
 
-    function counterFunc(event) {
-        
-debugger 
-    
-            count += 1;
-            return document.querySelector('.moves').innerHTML = count;
-    
-    };
-
-
-
-
-    let playFunc = function (event) {
-        showCard(event);
-        addToOpenCards(event);
-        counterFunc(event);
-
-
-        if (openCards.length === 2 && openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
-            console.log(openCards[0].firstElementChild.classList);
-            console.log(openCards[1].firstElementChild.classList);
-            lockMatch(event);
-            removeFromArray(openCards, 2);
-
-        } else if (openCards.length === 2 && !openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
-            console.log(openCards[0].firstElementChild.classList);
-            console.log(openCards[1].firstElementChild.classList);
-            removeFromArray(openCards, 2);
-            flipBack(event);
-
-        }
-
-
-
+        counter += 1;
+        return document.querySelector('.moves').innerHTML = counter;
 
     };
 
+    // Event listener: making cards clickable 
 
     for (let j = 0; j < shuffledCards.length; j++) {
 
         shuffledCards[j].addEventListener('click', playFunc);
 
     }
-
 
 }); // closes the DOMContentLoaded event listener 
 
