@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function (event) {
     let counter = 0;
 
     let min = document.getElementById('min');
-let sec = document.getElementById('sec');
-let secCount = 0;
-let minCount = 0; 
+    let sec = document.getElementById('sec');
+    let secCount = 0;
+    let minCount = 0;
 
 
     // Setting up the cards for the game
@@ -59,49 +59,62 @@ let minCount = 0;
     };
 
 
+
     // Click function for playing; also compares the cards to see if they match 
 
-    let playFunc = function (event) {
-        showCard(event);
-        addToOpenCards(event);
-        counterFunc(event);
-      
+    function playFunc(event) {
+    
+        debugger 
 
+        counterFunc(event);
+        
+        if (openCards.length < 2) {
+            showCard(event);
+            addToOpenCards(event);
+        }
 
         if (openCards.length === 2 && openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
+          
             lockMatch(event);
             removeFromArray(openCards, 2);
 
         } else if (openCards.length === 2 && !openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
+        
             flipBack(event);
             removeFromArray(openCards, 2);
 
         }
+
+        if (openCards.length > 2) {
+
+        }
+
 
     };
 
     // Functions called upon a click 
 
 
-    let showCard = function (event) {
-        debugger
-       event.target.classList.add('open', 'show');   
-      event.target.removeEventListener('click', playFunc); // prevents the card from being clicked twice
-      
-      if (event.target > 2) {
-        return false; 
-      }
-      
-      
+    function showCard(event) {
+        event.target.classList.add('open', 'show');
+        event.target.removeEventListener('click', playFunc); // prevents the card from being clicked twice
+
     };
 
 
-    let addToOpenCards = function (event) {
+    function addToOpenCards(event) {
         return openCards.push(event.target);
     };
 
+    function removeClickEvent() {
+        cards.forEach(card => {
+            card.removeEventListener('click', playFunc);
+        })
 
-    let lockMatch = function (event) {
+    };
+
+
+    function lockMatch(event) {
         openCards[0].classList.add('match');
         openCards[1].classList.add('match');
         openCards[0].removeEventListener('click', playFunc);
@@ -109,29 +122,28 @@ let minCount = 0;
 
     };
 
-    let flipBack = function (event) {
+    function flipBack(event) {
+
 
         window.setTimeout(function () { // sets the time after which incorrect cards will be flipped back
 
             cards.forEach(card => {
                 card.classList.remove('open', 'show');
-               card.addEventListener('click', playFunc); //readds the event listener that has been removed 
-                   
-          
-
-        })}, 1200);
-         
-    }
 
 
-    let removeFromArray = function (arr, item) { // function that removes 2 items from the openCards array at once 
-        for (var i = 0; i < item; i++) {
+            })
+        }, 1200);
+
+    };
+
+    function removeFromArray(arr, item) { // function that removes 2 items from the openCards array at once 
+        for (let i = 0; i < item; i++) {
             arr.pop();
         }
 
     };
 
-    let counterFunc = function (event) {
+    function counterFunc(event) {
 
         counter += 1;
         return document.querySelector('.moves').innerHTML = counter;
@@ -140,40 +152,49 @@ let minCount = 0;
 
     // Event listener: making cards clickable 
 
-    for (let j = 0; j < shuffledCards.length; j++) {
+    function clickEvent() {
+        cards.forEach(card => {
+            card.addEventListener('click', playFunc);
+        })
+    };
 
-        shuffledCards[j].addEventListener('click', playFunc);
+    clickEvent();
 
-    }
+    //for (let j = 0; j < shuffledCards.length; j++) {
+
+    //  shuffledCards[j].addEventListener('click', playFunc);
+
+    //    }
 
 
     // Timer 
 
-    
- function addZero (num) { // adds zeroes to time display
-   if (num < 10) {
-     return "0" + num; 
-   } else {
-     return num; 
-   }
- };
+
+    function addZero(num) { // adds zeroes to time display
+        if (num < 10) {
+            return "0" + num;
+        } else {
+            return num;
+        }
+    };
 
 
-let timer = function(){ window.setInterval(function() {
-  secCount += 1; 
-  sec.innerHTML = addZero(secCount); 
-  if (secCount === 10) {
-    minCount += 1; 
-    min.innerHTML = addZero(minCount); 
-    secCount = 0; 
-    sec.innerHTML = addZero(secCount);
-   }
-    
-}, 1000)
-window.removeEventListener('click', timer);
-};
+    let timer = function () {
+        window.setInterval(function () {
+            secCount += 1;
+            sec.innerHTML = addZero(secCount);
+            if (secCount === 10) {
+                minCount += 1;
+                min.innerHTML = addZero(minCount);
+                secCount = 0;
+                sec.innerHTML = addZero(secCount);
+            }
 
-window.addEventListener('click', timer);
+        }, 1000)
+        window.removeEventListener('click', timer);
+    };
+
+    window.addEventListener('click', timer);
 
 
 }); // closes the DOMContentLoaded event listener 
