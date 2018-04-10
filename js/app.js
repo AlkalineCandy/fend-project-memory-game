@@ -14,11 +14,12 @@
 
 document.addEventListener('DOMContentLoaded', function (event) {
 
-    // Initial variables 
+    // 1.) INITIAL VARIABLES
 
     let cards = Array.from(document.getElementsByClassName('card'));
     let deck = document.querySelector('.deck');
     let openCards = [];
+    let matchedCards = [];
     let counter = 0;
 
     let min = document.getElementById('min');
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     let minCount = 0;
 
 
-    // Setting up the cards for the game
+    // 2.) SETTING UP the cards for the game
 
     let shuffledCards = shuffle(cards);
     setCards();
@@ -60,45 +61,37 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 
 
-    // Click function for playing; also compares the cards to see if they match 
+    // 3.) LET'S PLAY: this goes down upon clicking a card
 
     function playFunc(event) {
-    
-        debugger 
 
-        counterFunc(event);
-        
         if (openCards.length < 2) {
             showCard(event);
             addToOpenCards(event);
         }
 
-        if (openCards.length === 2 && openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
-          
-            lockMatch(event);
-            removeFromArray(openCards, 2);
+        if (openCards.length === 2) {
+            // if a card is clicked twice, this flips it back without timed delay
+            if (openCards[0].isSameNode(openCards[1])) {
+                openCards[0].classList.remove('open', 'show');
+                removeFromArray(openCards, 2);
 
-        } else if (openCards.length === 2 && !openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
-        
-            flipBack(event);
-            removeFromArray(openCards, 2);
-
+                // compares cards to see if they match 
+            } else if (openCards[0].firstElementChild.isEqualNode(openCards[1].firstElementChild)) {
+                lockMatch();
+                removeFromArray(openCards, 2);
+            } else {
+                flipBack(event);
+                removeFromArray(openCards, 2);
+            }
         }
+    }
 
-        if (openCards.length > 2) {
-
-        }
-
-
-    };
-
-    // Functions called upon a click 
+    // 3.a.) playFunc FUNCTIONS (invoked upon clicking a card)
 
 
     function showCard(event) {
-        event.target.classList.add('open', 'show');
-        event.target.removeEventListener('click', playFunc); // prevents the card from being clicked twice
-
+        return event.target.classList.add('open', 'show');
     };
 
 
@@ -106,51 +99,45 @@ document.addEventListener('DOMContentLoaded', function (event) {
         return openCards.push(event.target);
     };
 
-    function removeClickEvent() {
-        cards.forEach(card => {
-            card.removeEventListener('click', playFunc);
-        })
-
-    };
-
 
     function lockMatch(event) {
-        openCards[0].classList.add('match');
-        openCards[1].classList.add('match');
-        openCards[0].removeEventListener('click', playFunc);
-        openCards[1].removeEventListener('click', playFunc);
-
+        for (openCard of openCards) {
+            debugger
+            openCard.classList.add('match');
+            openCard.removeEventListener('click', playFunc);
+            matchedCards.push(openCard); 
+        }
     };
 
     function flipBack(event) {
 
+        // adds an invisible layer so that no further cards can be clicked while the timeout goes down
+        document.body.classList.add('no-click');
 
-        window.setTimeout(function () { // sets the time after which incorrect cards will be flipped back
+        // sets the time after which incorrect cards will be flipped back
+        window.setTimeout(function () {
 
             cards.forEach(card => {
                 card.classList.remove('open', 'show');
-
-
+                document.body.classList.remove('no-click');
             })
-        }, 1200);
-
+        }, 1000);
     };
 
-    function removeFromArray(arr, item) { // function that removes 2 items from the openCards array at once 
+    // removes given amount of items from an array
+    function removeFromArray(arr, item) {
         for (let i = 0; i < item; i++) {
             arr.pop();
         }
-
     };
 
     function counterFunc(event) {
-
         counter += 1;
         return document.querySelector('.moves').innerHTML = counter;
 
     };
 
-    // Event listener: making cards clickable 
+    // 3.b.) CLICK HANDLER: event listener that makes cards clickable 
 
     function clickEvent() {
         cards.forEach(card => {
@@ -160,17 +147,40 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     clickEvent();
 
-    //for (let j = 0; j < shuffledCards.length; j++) {
+    // 4.) WIN SCENARIO 
 
-    //  shuffledCards[j].addEventListener('click', playFunc);
+   // 4.a.) Popup variables 
 
-    //    }
+let popup = document.querySelector('.popupwrap');
+let btn = document.getElementById('myBtn'); //delete
+let close = document.querySelector('.popupclose');
+let finalScore = document.querySelector('.score'); 
+let eval = document.querySelector('.evaluation'); 
+
+btn.onclick = function() {
+    popup.style.display = "block";
+  finalScore.innerHTML = 'Your final score is counter.';
+  
+}
 
 
-    // Timer 
+
+// Close window by cicking on x
+close.addEventListener('click,', function(event) {
+    popup.style.display = "none";
+}); 
 
 
-    function addZero(num) { // adds zeroes to time display
+// Close window by clicking outside of it 
+
+
+
+
+
+    // 5.) TIMER 
+
+    // adds zeroes to time display
+    function addZero(num) {
         if (num < 10) {
             return "0" + num;
         } else {
@@ -179,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     };
 
 
-    let timer = function () {
+    function timer() {
         window.setInterval(function () {
             secCount += 1;
             sec.innerHTML = addZero(secCount);
