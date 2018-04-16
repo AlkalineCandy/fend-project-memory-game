@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     function timer() {
         let intervalID = window.setInterval(function () {
 
-            if (matchedCards.length === 2) {
+            if (matchedCards.length === 16) {
                 winScenario(); // game ends here 
                 window.clearInterval(intervalID);
                 return event.stopPropagation();
