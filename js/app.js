@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     // 3.c.) SCORE PANEL STARS behavior
 
     function starCounter() {
-        if (counter % 10 === 0 && counter >= 10) {
+        if (counter % 10 === 0 && counter >= 10 && counter < 50) {
             scoreStars.firstElementChild.remove();
         } else {
             return false;
