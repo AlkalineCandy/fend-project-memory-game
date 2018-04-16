@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     // 3.c.) SCORE PANEL STARS behavior
 
     function starCounter() {
-        if (counter % 10 === 0 && counter >= 10) {
+        if (counter % 10 === 0 && counter >= 10 && counter < 50) {
             scoreStars.firstElementChild.remove();
         } else {
             return false;
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     function timer() {
         let intervalID = window.setInterval(function () {
 
-            if (matchedCards.length === 16) {
+            if (matchedCards.length === 2) {
                 winScenario(); // game ends here 
                 window.clearInterval(intervalID);
                 return event.stopPropagation();
